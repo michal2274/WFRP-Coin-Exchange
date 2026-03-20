@@ -19,13 +19,9 @@ body {
   background: linear-gradient(#e8d8b5, #d8c39a);
   padding: 25px;
   border-radius: 20px;
-  width: 360px;
+  width: 340px;
   box-shadow: 0 0 0 3px #7a5c2e, 0 10px 30px rgba(0,0,0,0.6);
-}
-
-h2 {
   text-align: center;
-  margin-bottom: 15px;
 }
 
 .inputs {
@@ -47,14 +43,24 @@ input {
   text-align: center;
 }
 
+button {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: none;
+  border-radius: 8px;
+  background: #8b6a3a;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #a07a45;
+}
+
 .section {
   margin-top: 10px;
   font-size: 14px;
-}
-
-.label {
-  font-weight: bold;
-  margin-top: 10px;
 }
 
 .row {
@@ -65,7 +71,6 @@ input {
 .result {
   margin-top: 10px;
   font-weight: bold;
-  text-align: center;
 }
 </style>
 </head>
@@ -77,44 +82,28 @@ input {
 
   <div class="inputs">
     <div class="input-group">
-      <input id="zk" type="number" placeholder="0" oninput="update()">
+      <input id="zk" type="number" placeholder="0">
       <div>ZK</div>
     </div>
     <div class="input-group">
-      <input id="ss" type="number" placeholder="0" oninput="update()">
+      <input id="ss" type="number" placeholder="0">
       <div>SS</div>
     </div>
     <div class="input-group">
-      <input id="mp" type="number" placeholder="0" oninput="update()">
+      <input id="mp" type="number" placeholder="0">
       <div>MP</div>
     </div>
   </div>
 
-  <div class="section">
-    <div class="label">Posiadane monety:</div>
-    <div class="row"><span>Złote Korony</span><span id="out_zk"></span></div>
-    <div class="row"><span>Szylingi</span><span id="out_ss"></span></div>
-    <div class="row"><span>Pensy</span><span id="out_mp"></span></div>
-  </div>
+  <button onclick="przelicz()">→ Przelicz na wszystkie</button>
+  <button onclick="rozbij()">→ Rozbij na monety</button>
 
-  <div class="section">
-    <div class="label">Wyrażone w:</div>
-    <div class="row"><span>koronach</span><span id="korony"></span></div>
-    <div class="row"><span>szylingach</span><span id="szylingi"></span></div>
-    <div class="row"><span>pensach</span><span id="pensy"></span></div>
-  </div>
+  <div class="section" id="wyniki"></div>
+  <div class="result" id="final"></div>
 
-  <div class="section">
-    <div class="row"><span>Koron</span><span id="k2"></span></div>
-    <div class="row"><span>Szylingów</span><span id="s2"></span></div>
-    <div class="row"><span>Pensów</span><span id="p2"></span></div>
+  <div style="margin-top:10px; font-size:12px;">
+    1 ZK = 20 SS = 240 MP
   </div>
-
-  <div class="section">
-    <div class="label">Przeliczone:</div>
-    <div class="result" id="final"></div>
-  </div>
-
 </div>
 
 <script>
@@ -122,44 +111,40 @@ function val(x) {
   return x === "" ? 0 : parseInt(x);
 }
 
-function update() {
+function getTotal() {
   let zk = val(document.getElementById("zk").value);
   let ss = val(document.getElementById("ss").value);
   let mp = val(document.getElementById("mp").value);
-
-  let total = zk*240 + ss*12 + mp;
-
-  // Posiadane
-  document.getElementById("out_zk").innerText = zk;
-  document.getElementById("out_ss").innerText = ss;
-  document.getElementById("out_mp").innerText = mp;
-
-  // Wyrażone w
-  document.getElementById("korony").innerText = (total/240).toFixed(2);
-  document.getElementById("szylingi").innerText = (total/12).toFixed(2);
-  document.getElementById("pensy").innerText = total.toFixed(1);
-
-  // Rozbicie częściowe
-  let k = total / 240;
-  let s = (total % 240) / 12;
-  let p = total % 12;
-
-  document.getElementById("k2").innerText = k.toFixed(2);
-  document.getElementById("s2").innerText = s.toFixed(2);
-  document.getElementById("p2").innerText = p.toFixed(2);
-
-  // Finalne rozbicie
-  let zk_new = Math.floor(total / 240);
-  let rest = total % 240;
-  let ss_new = Math.floor(rest / 12);
-  let mp_new = rest % 12;
-
-  document.getElementById("final").innerText =
-    zk_new + " ZK, " + ss_new + " SS, " + mp_new + " MP";
+  return zk*240 + ss*12 + mp;
 }
 
-// startowe przeliczenie
-update();
+// 1️⃣ NOWY PRZYCISK
+function przelicz() {
+  let total = getTotal();
+
+  let korony = (total / 240).toFixed(2);
+  let szylingi = (total / 12).toFixed(2);
+  let pensy = total.toFixed(0);
+
+  document.getElementById("wyniki").innerHTML = `
+    <div class="row"><span>Korony</span><span>${korony}</span></div>
+    <div class="row"><span>Szylingi</span><span>${szylingi}</span></div>
+    <div class="row"><span>Pensy</span><span>${pensy}</span></div>
+  `;
+}
+
+// 2️⃣ JAK WCZEŚNIEJ
+function rozbij() {
+  let total = getTotal();
+
+  let zk = Math.floor(total / 240);
+  let rest = total % 240;
+  let ss = Math.floor(rest / 12);
+  let mp = rest % 12;
+
+  document.getElementById("final").innerText =
+    `${zk} ZK, ${ss} SS, ${mp} MP`;
+}
 </script>
 
 </body>
