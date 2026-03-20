@@ -7,81 +7,65 @@
 <style>
 body {
   background: #1e1b16;
-  font-family: "Georgia", serif;
+  font-family: Georgia, serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  margin: 0;
 }
 
 .container {
   background: linear-gradient(#e8d8b5, #d8c39a);
-  padding: 30px;
+  padding: 25px;
   border-radius: 20px;
-  width: 320px;
+  width: 360px;
   box-shadow: 0 0 0 3px #7a5c2e, 0 10px 30px rgba(0,0,0,0.6);
-  text-align: center;
 }
 
 h2 {
-  margin-bottom: 20px;
-  color: #3b2b16;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
 .inputs {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .input-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  text-align: center;
 }
 
 input {
   width: 70px;
-  padding: 8px;
+  padding: 6px;
   border-radius: 8px;
   border: 2px solid #b89a6a;
   background: #f2e5c9;
   text-align: center;
-  font-weight: bold;
 }
 
-label {
-  margin-top: 5px;
-  font-size: 12px;
-  color: #5a4322;
-}
-
-button {
-  width: 100%;
-  padding: 10px;
-  margin: 5px 0;
-  border: none;
-  border-radius: 8px;
-  background: #8b6a3a;
-  color: #fff;
+.section {
+  margin-top: 10px;
   font-size: 14px;
-  cursor: pointer;
 }
 
-button:hover {
-  background: #a07a45;
+.label {
+  font-weight: bold;
+  margin-top: 10px;
 }
 
-#wynik {
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.result {
   margin-top: 10px;
   font-weight: bold;
-  color: #3b2b16;
-}
-
-.info {
-  margin-top: 15px;
-  font-size: 12px;
-  color: #5a4322;
+  text-align: center;
 }
 </style>
 </head>
@@ -93,27 +77,44 @@ button:hover {
 
   <div class="inputs">
     <div class="input-group">
-      <input id="zk" type="number" placeholder="0">
-      <label>ZK</label>
+      <input id="zk" type="number" placeholder="0" oninput="update()">
+      <div>ZK</div>
     </div>
-
     <div class="input-group">
-      <input id="ss" type="number" placeholder="0">
-      <label>SS</label>
+      <input id="ss" type="number" placeholder="0" oninput="update()">
+      <div>SS</div>
     </div>
-
     <div class="input-group">
-      <input id="mp" type="number" placeholder="0">
-      <label>P</label>
+      <input id="mp" type="number" placeholder="0" oninput="update()">
+      <div>MP</div>
     </div>
   </div>
 
-  <button onclick="przelicz()">→ Przelicz na pensy</button>
-  <button onclick="rozbij()">→ Rozbij na monety</button>
+  <div class="section">
+    <div class="label">Posiadane monety:</div>
+    <div class="row"><span>Złote Korony</span><span id="out_zk"></span></div>
+    <div class="row"><span>Szylingi</span><span id="out_ss"></span></div>
+    <div class="row"><span>Pensy</span><span id="out_mp"></span></div>
+  </div>
 
-  <div id="wynik"></div>
+  <div class="section">
+    <div class="label">Wyrażone w:</div>
+    <div class="row"><span>koronach</span><span id="korony"></span></div>
+    <div class="row"><span>szylingach</span><span id="szylingi"></span></div>
+    <div class="row"><span>pensach</span><span id="pensy"></span></div>
+  </div>
 
-  <div class="info">1 ZK = 20 SS = 240 P</div>
+  <div class="section">
+    <div class="row"><span>Koron</span><span id="k2"></span></div>
+    <div class="row"><span>Szylingów</span><span id="s2"></span></div>
+    <div class="row"><span>Pensów</span><span id="p2"></span></div>
+  </div>
+
+  <div class="section">
+    <div class="label">Przeliczone:</div>
+    <div class="result" id="final"></div>
+  </div>
+
 </div>
 
 <script>
@@ -121,30 +122,44 @@ function val(x) {
   return x === "" ? 0 : parseInt(x);
 }
 
-function przelicz() {
-  let zk = val(document.getElementById("zk").value);
-  let ss = val(document.getElementById("ss").value);
-  let mp = val(document.getElementById("mp").value);
-
-  let total = zk*240 + ss*12 + mp;
-  document.getElementById("wynik").innerText = total + " P";
-}
-
-function rozbij() {
+function update() {
   let zk = val(document.getElementById("zk").value);
   let ss = val(document.getElementById("ss").value);
   let mp = val(document.getElementById("mp").value);
 
   let total = zk*240 + ss*12 + mp;
 
+  // Posiadane
+  document.getElementById("out_zk").innerText = zk;
+  document.getElementById("out_ss").innerText = ss;
+  document.getElementById("out_mp").innerText = mp;
+
+  // Wyrażone w
+  document.getElementById("korony").innerText = (total/240).toFixed(2);
+  document.getElementById("szylingi").innerText = (total/12).toFixed(2);
+  document.getElementById("pensy").innerText = total.toFixed(1);
+
+  // Rozbicie częściowe
+  let k = total / 240;
+  let s = (total % 240) / 12;
+  let p = total % 12;
+
+  document.getElementById("k2").innerText = k.toFixed(2);
+  document.getElementById("s2").innerText = s.toFixed(2);
+  document.getElementById("p2").innerText = p.toFixed(2);
+
+  // Finalne rozbicie
   let zk_new = Math.floor(total / 240);
   let rest = total % 240;
   let ss_new = Math.floor(rest / 12);
   let mp_new = rest % 12;
 
-  document.getElementById("wynik").innerText =
-    zk_new + " ZK, " + ss_new + " SS, " + mp_new + " P";
+  document.getElementById("final").innerText =
+    zk_new + " ZK, " + ss_new + " SS, " + mp_new + " MP";
 }
+
+// startowe przeliczenie
+update();
 </script>
 
 </body>
