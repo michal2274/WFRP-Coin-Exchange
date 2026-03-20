@@ -103,8 +103,8 @@ button:hover {
     </div>
 
     <div class="input-group">
-      <input id="p" type="number" placeholder="0">
-      <label>P</label>
+      <input id="mp" type="number" placeholder="0">
+      <label>MP</label>
     </div>
   </div>
 
@@ -113,7 +113,7 @@ button:hover {
 
   <div id="wynik"></div>
 
-  <div class="info">1 ZK = 20 SS = 240 P</div>
+  <div class="info">1 ZK = 20 SS = 240 MP</div>
 </div>
 
 <script>
@@ -123,27 +123,27 @@ function val(x) {
 
 function przelicz() {
   let zk = val(document.getElementById("zk").value);
-  let ss = val(document.getElementById("s").value);
-  let p = val(document.getElementById("p").value);
+  let ss = val(document.getElementById("ss").value);
+  let mp = val(document.getElementById("mp").value);
 
   let total = zk*240 + ss*12 + mp;
-  document.getElementById("wynik").innerText = total + " P";
+  document.getElementById("wynik").innerText = total + " MP";
 }
 
 function rozbij() {
   let zk = val(document.getElementById("zk").value);
   let ss = val(document.getElementById("ss").value);
-  let p = val(document.getElementById("p").value);
+  let mp = val(document.getElementById("mp").value);
 
   let total = zk*240 + ss*12 + mp;
 
   let zk_new = Math.floor(total / 240);
   let rest = total % 240;
   let ss_new = Math.floor(rest / 12);
-  let p_new = rest % 12;
+  let mp_new = rest % 12;
 
   document.getElementById("wynik").innerText =
-    zk_new + " ZK, " + ss_new + " SS, " + p_new + " P";
+    zk_new + " ZK, " + ss_new + " SS, " + mp_new + " MP";
 }
 </script>
 
