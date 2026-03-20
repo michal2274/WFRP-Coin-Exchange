@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Mennica Imperium</title>
+</head>
+<body>
+
+<h2>Mennica Imperium</h2>
+
+<input id="zk" placeholder="ZK">
+<input id="ss" placeholder="SS">
+<input id="mp" placeholder="MP">
+
+<br><br>
+
+<button onclick="przelicz()">→ Przelicz na pensy</button>
+<button onclick="rozbij()">→ Rozbij na monety</button>
+
+<p id="wynik"></p>
+
+<script>
+function parseIntOrZero(x) {
+  return x === "" ? 0 : parseInt(x);
+}
+
+function przelicz() {
+  let zk = parseIntOrZero(document.getElementById("zk").value);
+  let ss = parseIntOrZero(document.getElementById("ss").value);
+  let mp = parseIntOrZero(document.getElementById("mp").value);
+
+  let total = zk*240 + ss*12 + mp;
+  document.getElementById("wynik").innerText = total + " MP";
+}
+
+function rozbij() {
+  let zk = parseIntOrZero(document.getElementById("zk").value);
+  let ss = parseIntOrZero(document.getElementById("ss").value);
+  let mp = parseIntOrZero(document.getElementById("mp").value);
+
+  let total = zk*240 + ss*12 + mp;
+
+  let zk_new = Math.floor(total / 240);
+  let rest = total % 240;
+  let ss_new = Math.floor(rest / 12);
+  let mp_new = rest % 12;
+
+  document.getElementById("wynik").innerText =
+    zk_new + " ZK, " + ss_new + " SS, " + mp_new + " MP";
+}
+</script>
+
+</body>
+</html>
