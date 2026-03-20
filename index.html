@@ -1,47 +1,120 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Mennica Imperium</title>
+<style>
+body {
+    background: #1e1b16;
+    font-family: Georgia, serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+.container {
+    background: linear-gradient(#e8d8b5, #d8c39a);
+    padding: 25px;
+    border-radius: 20px;
+    width: 340px;
+    box-shadow: 0 0 0 3px #7a5c2e, 0 10px 30px rgba(0,0,0,0.6);
+    text-align: center;
+}
+.inputs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+.input-group {
+    text-align: center;
+}
+input {
+    width: 70px;
+    padding: 6px;
+    border-radius: 8px;
+    border: 2px solid #b89a6a;
+    background: #f2e5c9;
+    text-align: center;
+}
+.section {
+    margin-top: 10px;
+    font-size: 14px;
+}
+.row {
+    display: flex;
+    justify-content: space-between;
+}
+.result {
+    margin-top: 10px;
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>🪙 Mennica Imperium</h2>
+    <div class="inputs">
+        <div class="input-group">
+            <input id="zk" type="number" placeholder="0">
+            <div>ZK</div>
+        </div>
+        <div class="input-group">
+            <input id="ss" type="number" placeholder="0">
+            <div>s</div>
+        </div>
+        <div class="input-group">
+            <input id="mp" type="number" placeholder="0">
+            <div>p</div>
+        </div>
+    </div>
+
+    <div class="section" id="wyniki"></div>
+    <div class="result" id="final"></div>
+    <div style="margin-top:10px; font-size:12px;">
+        1 ZK = 20 s = 240 p
+    </div>
+</div>
+
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-
-  function val(x) {
+function val(x) {
     return x === "" ? 0 : parseInt(x);
-  }
+}
 
-  function getTotal() {
+function getTotal() {
     let zk = val(document.getElementById("zk").value);
     let ss = val(document.getElementById("ss").value);
     let mp = val(document.getElementById("mp").value);
     return zk*240 + ss*12 + mp;
-  }
+}
 
-  function update() {
+function przelicz() {
     let total = getTotal();
-
-    // Przelicz na wszystkie jednostki
     let korony = (total / 240).toFixed(1);
     let szylingi = (total / 12).toFixed(1);
     let pensy = total.toFixed(0);
 
     document.getElementById("wyniki").innerHTML = `
-      <div class="row"><span>Korony</span><span>${korony}</span></div>
-      <div class="row"><span>Szylingi</span><span>${szylingi}</span></div>
-      <div class="row"><span>Pensy</span><span>${pensy}</span></div>
+        <div class="row"><span>Korony</span><span>${korony}</span></div>
+        <div class="row"><span>Szylingi</span><span>${szylingi}</span></div>
+        <div class="row"><span>Pensy</span><span>${pensy}</span></div>
     `;
 
-    // Rozbij na ZK, s, p
+    // rozbicie na pełne monety
     let zk = Math.floor(total / 240);
     let rest = total % 240;
     let ss = Math.floor(rest / 12);
     let mp = rest % 12;
+    document.getElementById("final").innerText = `${zk} ZK, ${ss} s, ${mp} p`;
+}
 
-    document.getElementById("final").innerText =
-      `${zk} ZK, ${ss} s, ${mp} p`;
-  }
+// przypisanie eventu input do wszystkich pól
+document.getElementById("zk").addEventListener("input", przelicz);
+document.getElementById("ss").addEventListener("input", przelicz);
+document.getElementById("mp").addEventListener("input", przelicz);
 
-  // Podłącz update() do inputów
-  ["zk","ss","mp"].forEach(id => {
-    document.getElementById(id).addEventListener("input", update);
-  });
-
-  // Wywołanie startowe
-  update();
-});
+// wywołanie na start, żeby pokazało 0
+przelicz();
 </script>
+</body>
+</html>
