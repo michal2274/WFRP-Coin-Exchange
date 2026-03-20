@@ -1,45 +1,47 @@
 <script>
-function val(x) {
-  return x === "" ? 0 : parseInt(x);
-}
+document.addEventListener("DOMContentLoaded", function() {
 
-function getTotal() {
-  let zk = val(document.getElementById("zk").value);
-  let ss = val(document.getElementById("ss").value);
-  let mp = val(document.getElementById("mp").value);
-  return zk*240 + ss*12 + mp;
-}
+  function val(x) {
+    return x === "" ? 0 : parseInt(x);
+  }
 
-// Funkcja do automatycznego liczenia
-function update() {
-  let total = getTotal();
+  function getTotal() {
+    let zk = val(document.getElementById("zk").value);
+    let ss = val(document.getElementById("ss").value);
+    let mp = val(document.getElementById("mp").value);
+    return zk*240 + ss*12 + mp;
+  }
 
-  // Przelicz na wszystkie jednostki
-  let korony = (total / 240).toFixed(1);
-  let szylingi = (total / 12).toFixed(1);
-  let pensy = total.toFixed(0);
+  function update() {
+    let total = getTotal();
 
-  document.getElementById("wyniki").innerHTML = `
-    <div class="row"><span>Korony</span><span>${korony}</span></div>
-    <div class="row"><span>Szylingi</span><span>${szylingi}</span></div>
-    <div class="row"><span>Pensy</span><span>${pensy}</span></div>
-  `;
+    // Przelicz na wszystkie jednostki
+    let korony = (total / 240).toFixed(1);
+    let szylingi = (total / 12).toFixed(1);
+    let pensy = total.toFixed(0);
 
-  // Rozbij na ZK, s, p
-  let zk = Math.floor(total / 240);
-  let rest = total % 240;
-  let ss = Math.floor(rest / 12);
-  let mp = rest % 12;
+    document.getElementById("wyniki").innerHTML = `
+      <div class="row"><span>Korony</span><span>${korony}</span></div>
+      <div class="row"><span>Szylingi</span><span>${szylingi}</span></div>
+      <div class="row"><span>Pensy</span><span>${pensy}</span></div>
+    `;
 
-  document.getElementById("final").innerText =
-    `${zk} ZK, ${ss} s, ${mp} p`;
-}
+    // Rozbij na ZK, s, p
+    let zk = Math.floor(total / 240);
+    let rest = total % 240;
+    let ss = Math.floor(rest / 12);
+    let mp = rest % 12;
 
-// Podłącz update() do każdego inputa
-document.getElementById("zk").addEventListener("input", update);
-document.getElementById("ss").addEventListener("input", update);
-document.getElementById("mp").addEventListener("input", update);
+    document.getElementById("final").innerText =
+      `${zk} ZK, ${ss} s, ${mp} p`;
+  }
 
-// Wywołanie na start, żeby pokazało wyniki jeśli są jakieś domyślne
-update();
+  // Podłącz update() do inputów
+  ["zk","ss","mp"].forEach(id => {
+    document.getElementById(id).addEventListener("input", update);
+  });
+
+  // Wywołanie startowe
+  update();
+});
 </script>
