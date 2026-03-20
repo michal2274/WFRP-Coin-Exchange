@@ -1,42 +1,139 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <title>Mennica Imperium</title>
+<meta charset="UTF-8">
+<title>Mennica Imperium</title>
+
+<style>
+body {
+  background: #1e1b16;
+  font-family: "Georgia", serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: linear-gradient(#e8d8b5, #d8c39a);
+  padding: 30px;
+  border-radius: 20px;
+  width: 320px;
+  box-shadow: 0 0 0 3px #7a5c2e, 0 10px 30px rgba(0,0,0,0.6);
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #3b2b16;
+}
+
+.inputs {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input {
+  width: 70px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 2px solid #b89a6a;
+  background: #f2e5c9;
+  text-align: center;
+  font-weight: bold;
+}
+
+label {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #5a4322;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: none;
+  border-radius: 8px;
+  background: #8b6a3a;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #a07a45;
+}
+
+#wynik {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #3b2b16;
+}
+
+.info {
+  margin-top: 15px;
+  font-size: 12px;
+  color: #5a4322;
+}
+</style>
 </head>
+
 <body>
 
-<h2>Mennica Imperium</h2>
+<div class="container">
+  <h2>🪙 Mennica Imperium</h2>
 
-<input id="zk" placeholder="ZK">
-<input id="ss" placeholder="SS">
-<input id="mp" placeholder="MP">
+  <div class="inputs">
+    <div class="input-group">
+      <input id="zk" type="number" placeholder="0">
+      <label>ZK</label>
+    </div>
 
-<br><br>
+    <div class="input-group">
+      <input id="ss" type="number" placeholder="0">
+      <label>SS</label>
+    </div>
 
-<button onclick="przelicz()">→ Przelicz na pensy</button>
-<button onclick="rozbij()">→ Rozbij na monety</button>
+    <div class="input-group">
+      <input id="mp" type="number" placeholder="0">
+      <label>MP</label>
+    </div>
+  </div>
 
-<p id="wynik"></p>
+  <button onclick="przelicz()">→ Przelicz na pensy</button>
+  <button onclick="rozbij()">→ Rozbij na monety</button>
+
+  <div id="wynik"></div>
+
+  <div class="info">1 ZK = 20 SS = 240 MP</div>
+</div>
 
 <script>
-function parseIntOrZero(x) {
+function val(x) {
   return x === "" ? 0 : parseInt(x);
 }
 
 function przelicz() {
-  let zk = parseIntOrZero(document.getElementById("zk").value);
-  let ss = parseIntOrZero(document.getElementById("ss").value);
-  let mp = parseIntOrZero(document.getElementById("mp").value);
+  let zk = val(document.getElementById("zk").value);
+  let ss = val(document.getElementById("ss").value);
+  let mp = val(document.getElementById("mp").value);
 
   let total = zk*240 + ss*12 + mp;
   document.getElementById("wynik").innerText = total + " MP";
 }
 
 function rozbij() {
-  let zk = parseIntOrZero(document.getElementById("zk").value);
-  let ss = parseIntOrZero(document.getElementById("ss").value);
-  let mp = parseIntOrZero(document.getElementById("mp").value);
+  let zk = val(document.getElementById("zk").value);
+  let ss = val(document.getElementById("ss").value);
+  let mp = val(document.getElementById("mp").value);
 
   let total = zk*240 + ss*12 + mp;
 
