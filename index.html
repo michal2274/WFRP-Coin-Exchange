@@ -49,11 +49,19 @@ input {
     margin-top: 10px;
     font-weight: bold;
 }
+h3 {
+    margin: 10px 0;
+    font-size: 16px;
+}
 </style>
 </head>
 <body>
 <div class="container">
     <h2>Kantor na Mauerstraße</h2>
+
+    <!-- Nagłówek nad polami -->
+    <h3>Posiadane monety</h3>
+
     <div class="inputs">
         <div class="input-group">
             <input id="zk" type="number" placeholder="0">
@@ -68,6 +76,9 @@ input {
             <div>p</div>
         </div>
     </div>
+
+    <!-- Nagłówek nad wynikami -->
+    <h3>Wyrażone w:</h3>
 
     <div class="section" id="wyniki"></div>
     <div class="result" id="final"></div>
@@ -108,12 +119,12 @@ function przelicz() {
     document.getElementById("final").innerText = `${zk} ZK, ${ss} s, ${mp} p`;
 }
 
-// przypisanie eventu input do wszystkich pól
+// automatyczne przeliczanie przy każdej zmianie wartości
 document.getElementById("zk").addEventListener("input", przelicz);
 document.getElementById("ss").addEventListener("input", przelicz);
 document.getElementById("mp").addEventListener("input", przelicz);
 
-// wywołanie na start, żeby pokazało 0
+// przelicz przy starcie, żeby pokazało 0
 przelicz();
 </script>
 </body>
