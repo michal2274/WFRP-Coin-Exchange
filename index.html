@@ -122,8 +122,8 @@ function getTotal() {
 function przelicz() {
   let total = getTotal();
 
-  let korony = (total / 240).toFixed(2);
-  let szylingi = (total / 12).toFixed(2);
+  let korony = (total / 240).toFixed(1);
+  let szylingi = (total / 12).toFixed(1);
   let pensy = total.toFixed(0);
 
   document.getElementById("wyniki").innerHTML = `
